@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
+const hostUrl = 'http://localhost:3000';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -9,8 +11,6 @@ import { HttpClient } from '@angular/common/http';
  * Service for handling Server-Sent Events (SSE).
  */
 export class ServerSentEventService {
-  private url = 'http://localhost:3000/events/worldTicker?count=100&ticks=200';
-
   constructor(private http: HttpClient) {}
 
   /**
@@ -28,7 +28,7 @@ export class ServerSentEventService {
 
       eventSource.onerror = (error) => {
         if (eventSource.readyState === 0) {
-          console.log('The stream has been closed by the server.');
+          console.log(`${url}: stream closed by the server`);
           eventSource.close();
           observer.complete();
         } else {
@@ -39,10 +39,29 @@ export class ServerSentEventService {
   }
 
   /**
-   * Returns an observable for the default SSE URL.
-   * @returns An observable that emits `MessageEvent` objects.
+   * Retrieves the world ticker events from the server.
+   *
+   * @param count The number of ticker events to retrieve.
+   * @param ticks The number of ticks for each ticker event.
+   * @returns An Observable that emits MessageEvent objects representing the ticker events.
    */
-  getSse(): Observable<MessageEvent> {
-    return this.getEventSource(this.url);
+  getWorldTicker(
+    name: string,
+    count: number,
+    ticks: number,
+  ): Observable<MessageEvent> {
+    const worldTickerUrl = `${hostUrl}/events/worldTickerEvent?name=${name}&count=${count}&ticks=${ticks}`;
+
+    return this.getEventSource(worldTickerUrl);
+  }
+
+  /**
+   * Retrieves the application events as an Observable of MessageEvent.
+   * @returns An Observable of MessageEvent.
+   */
+  getAppEvents(): Observable<MessageEvent> {
+    const appEventsUrl = hostUrl + '/events/appEventsEndpoint';
+
+    return this.getEventSource(appEventsUrl);
   }
 }
