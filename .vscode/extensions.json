@@ -1,7 +1,6 @@
 {
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=827846
   "recommendations": [
-    "angular.ng-template",
     "cyrilletuzi.angular-schematics",
     "infinity1207.angular2-switcher",
     "editorconfig.editorconfig",
@@ -14,6 +13,8 @@
     "ms-playwright.playwright",
     "esbenp.prettier-vscode",
     "humao.rest-client",
-    "redhat.vscode-yaml"
+    "redhat.vscode-yaml",
+    "formulahendry.auto-rename-tag",
+    "formulahendry.auto-close-tag"
   ]
 }
