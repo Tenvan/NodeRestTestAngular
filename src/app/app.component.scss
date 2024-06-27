@@ -1,0 +1,41 @@
+.sending {
+  &.container {
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid #ccc;
+    background-color: blanchedalmond;
+    margin: 5px;
+    padding: 5px;
+
+    .ticker {
+      display: block;
+      max-width: 300px;
+      min-width: 300px;
+
+      border: white 3px dotted;
+      background-color: lightyellow;
+      color: black;
+      padding: 5px;
+      margin: 5px;
+
+      font-size: 0.9em;
+      font-weight: bold;
+      display: flex;
+
+      .world {
+        min-width: 150px;
+      }
+    }
+  }
+}
+
+.receiving {
+  &.container {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: greenyellow;
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid #ccc;
+  }
+}

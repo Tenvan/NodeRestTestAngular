@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, share, type Subscriber } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 const hostUrl = 'http://localhost:3000';
+const appEventsUrl = hostUrl + '/events/appEventsEndpoint';
 
 @Injectable({
   providedIn: 'root',
@@ -11,15 +12,19 @@ const hostUrl = 'http://localhost:3000';
  * Service for handling Server-Sent Events (SSE).
  */
 export class ServerSentEventService {
-  constructor(private http: HttpClient) {}
+  appStream!: Observable<MessageEvent<any>>;
+
+  constructor(private http: HttpClient) {
+    this.appStream = this.initEventSource(appEventsUrl);
+  }
 
   /**
    * Creates and returns an observable for the specified SSE URL.
    * @param url The URL of the SSE endpoint.
    * @returns An observable that emits `MessageEvent` objects.
    */
-  getEventSource(url: string): Observable<MessageEvent> {
-    return new Observable((observer) => {
+  initEventSource(url: string) {
+    return new Observable((observer: Subscriber<MessageEvent>) => {
       const eventSource = new EventSource(url);
 
       eventSource.onmessage = (event) => {
@@ -35,7 +40,12 @@ export class ServerSentEventService {
           observer.error(error);
         }
       };
-    });
+
+      // Ressourcenbereinigung bei Unsubscribe
+      return () => {
+        eventSource.close();
+      };
+    }).pipe(share());
   }
 
   /**
@@ -45,23 +55,17 @@ export class ServerSentEventService {
    * @param ticks The number of ticks for each ticker event.
    * @returns An Observable that emits MessageEvent objects representing the ticker events.
    */
-  getWorldTicker(
-    name: string,
-    count: number,
-    ticks: number,
-  ): Observable<MessageEvent> {
+  getWorldTicker(name: string, count: number, ticks: number) {
     const worldTickerUrl = `${hostUrl}/events/worldTickerEvent?name=${name}&count=${count}&ticks=${ticks}`;
 
-    return this.getEventSource(worldTickerUrl);
+    return this.initEventSource(worldTickerUrl);
   }
 
   /**
    * Retrieves the application events as an Observable of MessageEvent.
    * @returns An Observable of MessageEvent.
    */
-  getAppEvents(): Observable<MessageEvent> {
-    const appEventsUrl = hostUrl + '/events/appEventsEndpoint';
-
-    return this.getEventSource(appEventsUrl);
+  getAppEvents() {
+    return this.appStream;
   }
 }

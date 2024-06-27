@@ -1,37 +1,3 @@
-<style>
-  .sending {
-    &.container {
-      background-color: blanchedalmond;
-      margin-top: 20px;
-      border: 1px solid #ccc;
-      padding: 10px;
-      max-width: 800px;
-    }
-
-    .ticker {
-      border-bottom: dotted 2px silver;
-      font-size: 0.9em;
-      font-weight: bold;
-      display: flex;
-      gap: 20px;
-
-      .world {
-        min-width: 150px;
-      }
-    }
-  }
-
-  .receiving {
-    &.container {
-      background-color: greenyellow;
-      margin-top: 20px;
-      border: 1px solid #ccc;
-      padding: 10px;
-      max-width: 800px;
-    }
-  }
-</style>
-
 <main class="main">
   <div class="content">
     <h1>{{ title }}</h1>
@@ -46,10 +12,12 @@
     </div>
 
     <div class="receiving container">
-      <div class="ticker">Application Event: {{ AppEvent | async | json }}</div>
+      @for (item of clientCounts; track $index) {
+      <app-client-simple [clientId]="item"></app-client-simple>
+      }
     </div>
 
   </div>
-</main>
 
-<router-outlet />
+
+</main>
