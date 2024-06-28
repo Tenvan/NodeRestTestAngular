@@ -55,9 +55,8 @@ export class ServerSentEventService {
    * @param ticks The number of ticks for each ticker event.
    * @returns An Observable that emits MessageEvent objects representing the ticker events.
    */
-  getWorldTicker(name: string, count: number, ticks: number) {
-    const worldTickerUrl = `${hostUrl}/events/worldTickerEvent?name=${name}&count=${count}&ticks=${ticks}`;
-
+  getWorldTicker(name: string, start: number, count: number, ticks: number) {
+    const worldTickerUrl = `${hostUrl}/events/worldTickerEvent?name=${name}&start=${start}&count=${count}&ticks=${ticks}`;
     return this.initEventSource(worldTickerUrl);
   }
 
