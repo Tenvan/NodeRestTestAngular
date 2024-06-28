@@ -1,5 +1,8 @@
-<div class="title">{{ title }}: {{ clientId }}</div>
+<div class="title">{{ title }}: {{ clientId() }}</div>
 
-<div class="receiving container">
-  <div class="ticker">Application Event: {{ ClientEvent | async | json }}</div>
+<div class="container">
+  <div class="ticker">World
+    <div class="id">Id: {{ eventObjectId() }}</div>
+    <div class="name">Name: {{ eventObjectName() }}</div>
+  </div>
 </div>

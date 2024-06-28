@@ -1,7 +1,14 @@
 import { AsyncPipe, CommonModule, JsonPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  signal,
+  type OnInit,
+} from '@angular/core';
 import { ServerSentEventService } from '../../ServerSentEventService';
+import { IAppEventArgs } from '../../models/IAppEventArgs';
+import { input } from '@angular/core';
 
 @Component({
   selector: 'app-client-simple',
@@ -9,23 +16,26 @@ import { ServerSentEventService } from '../../ServerSentEventService';
   imports: [AsyncPipe, JsonPipe, CommonModule],
   templateUrl: './client-simple.component.html',
   styleUrl: './client-simple.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
-export class ClientSimpleComponent {
-  title = 'simple-client';
+export class ClientSimpleComponent implements OnInit {
+  title = 'Simple Client';
 
-  @Input()
-  clientId: number | undefined;
+  clientId = input(0);
 
-  ClientEvent = new BehaviorSubject<string>('');
+  eventObjectId = signal(0);
 
-  constructor(private sseService: ServerSentEventService) {
+  eventObjectName = signal('void');
+
+  constructor(private sseService: ServerSentEventService) {}
+  ngOnInit(): void {
     this.sseService
       .getAppEvents()
       .pipe()
       .subscribe((event: MessageEvent) => {
-        const value = JSON.parse(event.data);
-        this.ClientEvent.next(value);
+        const value = JSON.parse(event.data) as IAppEventArgs;
+        this.eventObjectId.set(value.payload.value);
+        this.eventObjectName.set(value.payload.name);
       });
   }
 }
