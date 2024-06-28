@@ -2,18 +2,17 @@
   <div class="content">
     <h1>{{ title }}</h1>
 
-    <div class="sending container">
-      @for (item of counts; track $index) {
-      <div class="ticker">
-        <div class="world">World Ticker {{$index}} ({{ counts[$index] }})</div>
-        <div class="result">{{ WorldTicker[$index] | async }}</div>
-      </div>
+    <h2>Client Area</h2>
+    <div class="receiving container">
+      @for (item of clientCounts; track $index) {
+        <app-client-simple [clientId]="item"></app-client-simple>
       }
     </div>
 
-    <div class="receiving container">
-      @for (item of clientCounts; track $index) {
-      <app-client-simple [clientId]="item"></app-client-simple>
+    <h2>Service Area</h2>
+    <div class="sending container">
+      @for (item of tickerCounts; track $index) {
+      <app-world-ticker [tickerId]="item"></app-world-ticker>
       }
     </div>
 
