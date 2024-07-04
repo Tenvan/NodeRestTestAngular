@@ -2,8 +2,13 @@ export interface IAppEventArgs {
   event: string;
 
   payload: {
-    value: number;
     name: string;
+    value: {
+      data: {
+        event: string;
+        payload: number;
+      };
+    };
   };
 }
 

@@ -23,7 +23,7 @@ export class ClientSimpleComponent implements OnInit {
 
   clientId = input(0);
 
-  eventObjectId = signal(0);
+  eventObjecValue = signal(0);
 
   eventObjectName = signal('void');
 
@@ -34,8 +34,8 @@ export class ClientSimpleComponent implements OnInit {
       .pipe()
       .subscribe((event: MessageEvent) => {
         const value = JSON.parse(event.data) as IAppEventArgs;
-        this.eventObjectId.set(value.payload.value);
-        this.eventObjectName.set(value.payload.name);
+        this.eventObjectName.set(value.payload.value.data.event);
+        this.eventObjecValue.set(value.payload.value.data.payload);
       });
   }
 }

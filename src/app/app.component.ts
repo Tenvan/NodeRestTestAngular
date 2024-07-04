@@ -4,8 +4,8 @@ import { BehaviorSubject } from 'rxjs';
 import { ClientSimpleComponent } from './components/client-simple/client-simple.component';
 import { WorldTickerComponent } from './components/world-ticker/world-ticker.component';
 
-const tickerCount = 6;
-const clientCount = 6;
+const tickerCount = 30;
+const clientCount = 15;
 
 @Component({
   selector: 'app-root',
