@@ -24,14 +24,18 @@ export class WorldTickerComponent implements OnInit {
 
   eventPayload = signal(0);
 
-  start = Math.floor(Math.random() * 10000);
+  start = 0;
 
-  count = Math.floor(Math.random() * 400) + 100;
+  count = 0;
 
-  ticks = Math.floor(Math.random() * 500);
+  ticks = 0;
 
   constructor(private sseService: ServerSentEventService) {}
   ngOnInit(): void {
+    this.start = this.tickerId() * 1000;
+    this.count = 1000;
+    this.ticks = 1;
+
     this.sseService
       .getWorldTicker(
         `Ticker ${this.tickerId().toString()}`,
@@ -42,7 +46,6 @@ export class WorldTickerComponent implements OnInit {
       .pipe()
       .subscribe((event: MessageEvent) => {
         const value = JSON.parse(event.data) as IWorldTickerEventArgs;
-        console.log('WorldTickerComponent', value);
         this.eventPayload.set(value.payload);
       });
   }
