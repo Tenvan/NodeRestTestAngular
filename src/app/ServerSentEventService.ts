@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, share, type Subscriber } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
-const hostUrl = 'http://localhost:3000';
+const hostUrl = 'http://127.0.0.1:3000';
 const appEventsUrl = hostUrl + '/events/appEventsEndpoint';
 
 @Injectable({
