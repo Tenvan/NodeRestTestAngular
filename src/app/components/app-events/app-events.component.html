@@ -1,8 +1,14 @@
-<div class="title">{{ title }}: {{ clientId() }}</div>
+<div class="title">{{ title }}: {{ eventId() }}</div>
 
 <div class="container">
   <div class="ticker">
-    <div class="id">Id: {{ eventObjecValue() }}</div>
-    <div class="name">Name: {{ eventObjectName() }}</div>
+    Receiver:
+    <div class="id">Id: {{ receivedEventId() }}</div>
+    <div class="event">event: {{ receivedEventName() }}</div>
+    Sender:
+    <div class="id">Id: {{ sourceEventId() }}</div>
+    <div class="event">event: {{ sourceEventName() }}</div>
+    Data:
+    <div class="data">{{ sourceEventData() }}</div>
   </div>
 </div>

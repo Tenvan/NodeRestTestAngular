@@ -6,11 +6,12 @@ import {
   signal,
   type OnInit,
 } from '@angular/core';
+import type { Subscription } from 'rxjs';
 import { ServerSentEventService } from '../../ServerSentEventService';
-import { IAppEventArgs } from '../../models/IAppEventArgs';
+import { IAppTickerEventArgs } from '../../models/IAppTickerEventArgs';
 
 @Component({
-  selector: 'client-ticker',
+  selector: 'app-ticker',
   standalone: true,
   imports: [AsyncPipe, JsonPipe, CommonModule],
   templateUrl: './app-ticker.component.html',
@@ -18,14 +19,16 @@ import { IAppEventArgs } from '../../models/IAppEventArgs';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class AppTickerComponent implements OnInit {
-  // #region Properties (4)
+  // #region Properties (5)
 
+  public streamId = signal('void');
+  public messageText = signal('void');
+  public dataText = signal('void');
+  public stream: Subscription | undefined;
   public tickerId = input(0);
-  public eventObjecValue = signal(0);
-  public eventObjectName = signal('void');
   public title = 'App Ticker';
 
-  // #endregion Properties (4)
+  // #endregion Properties (5)
 
   // #region Constructors (1)
 
@@ -33,19 +36,26 @@ export class AppTickerComponent implements OnInit {
 
   // #endregion Constructors (1)
 
-  // #region Public Methods (1)
+  // #region Public Methods (2)
+
+  public ngOnDestroy(): void {
+    this.stream?.unsubscribe();
+    console.log('Unsubscribed getClientTicker', this.tickerId());
+  }
 
   public ngOnInit(): void {
-    this.sseService
-      .getAppTicker()
+    console.log('getClientTicker', this.tickerId());
+
+    this.stream = this.sseService
+      .getAppTicker(`appTicker${this.tickerId()}`)
       .pipe()
       .subscribe((event: MessageEvent) => {
-        console.log('Received event: ', event);
-        const value = JSON.parse(event.data) as IAppEventArgs;
-        this.eventObjectName.set(value.payload.value.data.event);
-        this.eventObjecValue.set(value.payload.value.data.payload);
+        const value = JSON.parse(event.data) as IAppTickerEventArgs;
+        this.streamId.set(value.id);
+        this.dataText.set(value.payload.data);
+        this.messageText.set(value.payload.message);
       });
   }
 
-  // #endregion Public Methods (1)
+  // #endregion Public Methods (2)
 }

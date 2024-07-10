@@ -33,19 +33,19 @@ export class AppComponent {
 
   public AppEvent = new BehaviorSubject<string>('');
   public WorldTicker: BehaviorSubject<string>[] = [];
-  public appEventsCount = signal(3);
+  public appEventsCount = signal(2);
   public appEventsCounts = computed(() =>
     Array(this.appEventsCount())
       .fill(0)
       .map((x, i) => i + 1),
   );
-  public appTickerCount = signal(3);
+  public appTickerCount = signal(2);
   public appTickerCounts = computed(() =>
     Array(this.appTickerCount())
       .fill(0)
       .map((x, i) => i + 1),
   );
-  public clientTickerCount = signal(3);
+  public clientTickerCount = signal(2);
   public clientTickerCounts = computed(() =>
     Array(this.clientTickerCount())
       .fill(0)

@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { ServerSentEventService } from '../../ServerSentEventService';
 import { IAppEventArgs } from '../../models/IAppEventArgs';
+import type { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-events',
@@ -18,14 +19,18 @@ import { IAppEventArgs } from '../../models/IAppEventArgs';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class AppEventsComponent implements OnInit {
-  // #region Properties (4)
+  // #region Properties (7)
 
-  public clientId = input(0);
-  public eventObjecValue = signal(0);
-  public eventObjectName = signal('void');
+  public eventId = input(0);
+  public receivedEventId = signal('');
+  public receivedEventName = signal('');
+  public sourceEventId = signal('');
+  public sourceEventName = signal('');
+  public sourceEventData = signal('');
+  public stream: Subscription | undefined;
   public title = 'App Events';
 
-  // #endregion Properties (4)
+  // #endregion Properties (7)
 
   // #region Constructors (1)
 
@@ -33,19 +38,28 @@ export class AppEventsComponent implements OnInit {
 
   // #endregion Constructors (1)
 
-  // #region Public Methods (1)
+  // #region Public Methods (2)
+
+  public ngOnDestroy(): void {
+    this.stream?.unsubscribe();
+    console.log('Unsubscribed getAppEvents', this.receivedEventId());
+  }
 
   public ngOnInit(): void {
-    this.sseService
-      .getAppEvents()
+    console.log('getAppEvents', this.receivedEventId());
+
+    this.stream = this.sseService
+      .getAppEvents(`appEvent${this.receivedEventId()}`)
       .pipe()
       .subscribe((event: MessageEvent) => {
-        console.log('Received event: ', event);
         const value = JSON.parse(event.data) as IAppEventArgs;
-        this.eventObjectName.set(value.payload.value.data.event);
-        this.eventObjecValue.set(value.payload.value.data.payload);
+        this.receivedEventId.set(value.id);
+        this.receivedEventName.set(value.event);
+        this.sourceEventId.set(value.payload.value.data.id);
+        this.sourceEventName.set(value.payload.value.data.event);
+        this.sourceEventData.set(JSON.stringify(value.payload.value, null, 2));
       });
   }
 
-  // #endregion Public Methods (1)
+  // #endregion Public Methods (2)
 }

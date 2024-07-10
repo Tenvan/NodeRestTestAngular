@@ -55,11 +55,13 @@ export class ServerSentEventService {
     return this.initEventSource(worldTickerUrl);
   }
 
-  getAppTicker() {
-    return this.initEventSource(sseAppTicker);
+  getAppTicker(name: string) {
+    const sseAppTickerUrl = `${sseAppTicker}?name=${name}`;
+    return this.initEventSource(sseAppTickerUrl);
   }
 
-  getAppEvents() {
-    return this.initEventSource(sseAppEvents);
+  getAppEvents(name: string) {
+    const sseAppEventsUrl = `${sseAppEvents}?name=${name}`;
+    return this.initEventSource(sseAppEventsUrl);
   }
 }

@@ -1,19 +1,18 @@
 export interface IAppEventArgs {
-  event: string;
+  // #region Properties (3)
 
+  event: string;
+  id: string;
   payload: {
     name: string;
     value: {
       data: {
+        id: string;
         event: string;
-        payload: number;
+        data: any;
       };
     };
   };
-}
 
-export interface IWorldTickerEventArgs {
-  event: string;
-
-  payload: number;
+  // #endregion Properties (3)
 }

@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Launch Edge",
+      "name": "Launch in Edge",
       "request": "launch",
       "type": "msedge",
       "url": "http://localhost:4200/",
