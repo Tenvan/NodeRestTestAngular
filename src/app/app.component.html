@@ -3,20 +3,32 @@
     <h1>{{ title }}</h1>
 
     <h2>Client Area</h2>
-    <mat-slider min="1" max="15" step="1" showTickMarks discrete >
-      <input matSliderThumb value="1">
+    <mat-slider min="1" max="30" step="1" showTickMarks discrete>
+      <input matSliderThumb [ngModel]="clientTickerCount()" (ngModelChange)="clientTickerCount.set($event)">
     </mat-slider>
 
-    <div class="receiving container">
-      @for (item of clientCounts; track $index) {
-        <app-client-simple [clientId]="item"></app-client-simple>
+    <div class="ticker container">
+      @for (item of clientTickerCounts(); track $index) {
+      <client-ticker [tickerId]="item"></client-ticker>
+      }
+    </div>
+
+    <mat-slider min="1" max="30" step="1" showTickMarks discrete>
+      <input matSliderThumb [ngModel]="appTickerCount()" (ngModelChange)="appTickerCount.set($event)">
+    </mat-slider>
+    <div class="ticker container">
+      @for (item of appTickerCounts(); track $index) {
+      <app-ticker [tickerId]="item"></app-ticker>
       }
     </div>
 
     <h2>Service Area</h2>
-    <div class="sending container">
-      @for (item of tickerCounts; track $index) {
-      <app-world-ticker [tickerId]="item"></app-world-ticker>
+    <mat-slider min="1" max="30" step="1" showTickMarks discrete>
+      <input matSliderThumb [ngModel]="appEventsCount()" (ngModelChange)="appEventsCount.set($event)">
+    </mat-slider>
+    <div class="events container">
+      @for (item of appEventsCounts(); track $index) {
+      <app-events [clientId]="item"></app-events>
       }
     </div>
 

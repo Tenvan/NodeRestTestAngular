@@ -3,7 +3,9 @@ import { Observable, share, type Subscriber } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 const hostUrl = 'http://127.0.0.1:3000';
-const appEventsUrl = hostUrl + '/events/appEventsEndpoint';
+const sseAppEvents = hostUrl + '/events/sseAppEvents';
+const sseAppTicker = hostUrl + '/events/sseAppTicker';
+const sseClientTicker = hostUrl + '/events/sseClientTicker';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +17,7 @@ export class ServerSentEventService {
   appStream!: Observable<MessageEvent<any>>;
 
   constructor(private http: HttpClient) {
-    this.appStream = this.initEventSource(appEventsUrl);
+    this.appStream = this.initEventSource(sseAppEvents);
   }
 
   /**
@@ -48,23 +50,16 @@ export class ServerSentEventService {
     }).pipe(share());
   }
 
-  /**
-   * Retrieves the world ticker events from the server.
-   *
-   * @param count The number of ticker events to retrieve.
-   * @param ticks The number of ticks for each ticker event.
-   * @returns An Observable that emits MessageEvent objects representing the ticker events.
-   */
-  getWorldTicker(name: string, start: number, count: number, ticks: number) {
-    const worldTickerUrl = `${hostUrl}/events/worldTickerEvent?name=${name}&start=${start}&count=${count}&ticks=${ticks}`;
+  getClientTicker(name: string, start: number, count: number, ticks: number) {
+    const worldTickerUrl = `${sseClientTicker}?name=${name}&start=${start}&count=${count}&ticks=${ticks}`;
     return this.initEventSource(worldTickerUrl);
   }
 
-  /**
-   * Retrieves the application events as an Observable of MessageEvent.
-   * @returns An Observable of MessageEvent.
-   */
+  getAppTicker() {
+    return this.initEventSource(sseAppTicker);
+  }
+
   getAppEvents() {
-    return this.appStream;
+    return this.initEventSource(sseAppEvents);
   }
 }

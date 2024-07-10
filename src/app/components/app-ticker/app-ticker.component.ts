@@ -2,40 +2,50 @@ import { AsyncPipe, CommonModule, JsonPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  Input,
+  input,
   signal,
   type OnInit,
 } from '@angular/core';
 import { ServerSentEventService } from '../../ServerSentEventService';
 import { IAppEventArgs } from '../../models/IAppEventArgs';
-import { input } from '@angular/core';
 
 @Component({
-  selector: 'app-client-simple',
+  selector: 'client-ticker',
   standalone: true,
   imports: [AsyncPipe, JsonPipe, CommonModule],
-  templateUrl: './client-simple.component.html',
-  styleUrl: './client-simple.component.scss',
+  templateUrl: './app-ticker.component.html',
+  styleUrl: './app-ticker.component.scss',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class ClientSimpleComponent implements OnInit {
-  title = 'Simple Client';
+export class AppTickerComponent implements OnInit {
+  // #region Properties (4)
 
-  clientId = input(0);
+  public tickerId = input(0);
+  public eventObjecValue = signal(0);
+  public eventObjectName = signal('void');
+  public title = 'App Ticker';
 
-  eventObjecValue = signal(0);
+  // #endregion Properties (4)
 
-  eventObjectName = signal('void');
+  // #region Constructors (1)
 
   constructor(private sseService: ServerSentEventService) {}
-  ngOnInit(): void {
+
+  // #endregion Constructors (1)
+
+  // #region Public Methods (1)
+
+  public ngOnInit(): void {
     this.sseService
-      .getAppEvents()
+      .getAppTicker()
       .pipe()
       .subscribe((event: MessageEvent) => {
+        console.log('Received event: ', event);
         const value = JSON.parse(event.data) as IAppEventArgs;
         this.eventObjectName.set(value.payload.value.data.event);
         this.eventObjecValue.set(value.payload.value.data.payload);
       });
   }
+
+  // #endregion Public Methods (1)
 }

@@ -10,38 +10,36 @@ import { ServerSentEventService } from '../../ServerSentEventService';
 import type { IWorldTickerEventArgs } from '../../models/IAppEventArgs';
 
 @Component({
-  selector: 'app-world-ticker',
+  selector: 'app-ticker',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './world-ticker.component.html',
-  styleUrl: './world-ticker.component.scss',
+  templateUrl: './client-ticker.component.html',
+  styleUrl: './client-ticker.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class WorldTickerComponent implements OnInit {
-  title = 'World Ticker';
+export class ClientTickerComponent implements OnInit {
+  title = 'Client Ticker';
 
   tickerId = input(0);
 
   eventPayload = signal(0);
 
-  start = 0;
+  start = signal(0);
 
-  count = 0;
+  count = signal(20);
 
-  ticks = 0;
+  ticks = signal(200);
 
   constructor(private sseService: ServerSentEventService) {}
   ngOnInit(): void {
-    this.start = this.tickerId() * 1000;
-    this.count = 20;
-    this.ticks = 200;
+    this.start.set(this.tickerId() * 1000);
 
     this.sseService
-      .getWorldTicker(
+      .getClientTicker(
         `Ticker ${this.tickerId().toString()}`,
-        this.start,
-        this.count,
-        this.ticks,
+        this.start(),
+        this.count(),
+        this.ticks(),
       )
       .pipe()
       .subscribe((event: MessageEvent) => {

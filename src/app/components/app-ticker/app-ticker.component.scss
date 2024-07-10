@@ -1,0 +1,23 @@
+:host {
+  display: block;
+  max-width: 200px;
+  min-width: 200px;
+  padding: 5px;
+  margin: 5px;
+}
+
+.title {
+  font-size: 1.2em;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.container {
+  background-color: lightskyblue;
+  color: darkblue;
+  padding: 2px;
+  margin: 2px;
+
+}

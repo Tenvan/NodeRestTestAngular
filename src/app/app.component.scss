@@ -1,5 +1,11 @@
-.receiving {
-  &.container {
+
+mat-slider {
+  width: calc(100% - 2em);
+  margin: 2em 1em;
+}
+
+.container {
+  &.ticker {
     display: flex;
     flex-wrap: wrap;
     background-color: rgb(197, 230, 250);
@@ -7,10 +13,8 @@
     margin: 5px;
     padding: 5px;
   }
-}
 
-.sending {
-  &.container {
+  &.events {
     display: flex;
     flex-wrap: wrap;
     background-color: rgb(253, 220, 224);
