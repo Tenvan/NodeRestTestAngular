@@ -1,0 +1,18 @@
+{
+  "angular-schematics.schematicsDefaultOptions": {
+    "angular-*": {
+      "style": "scss",
+      "externalTemplate": true,
+      "skipStyle": true,
+      "selectorPrefix": "del"
+    },
+    "angular-component": {
+      "skipChangeDetectionOnPush": true,
+      "ngOnInit": true
+    },
+    "angular-page": {
+      "skipChangeDetectionOnPush": true,
+      "skipNgOnInit": false
+    }
+  }
+}
