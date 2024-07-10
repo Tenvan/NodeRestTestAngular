@@ -3,6 +3,8 @@ import { Component, signal } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ClientSimpleComponent } from './components/client-simple/client-simple.component';
 import { WorldTickerComponent } from './components/world-ticker/world-ticker.component';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +15,8 @@ import { WorldTickerComponent } from './components/world-ticker/world-ticker.com
     CommonModule,
     ClientSimpleComponent,
     WorldTickerComponent,
+    MatSliderModule,
+    MatButtonModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -21,14 +25,14 @@ import { WorldTickerComponent } from './components/world-ticker/world-ticker.com
  * The root component of the Angular application.
  */
 export class AppComponent {
-  tickerCount = signal(3);
-  clientCount = signal(3);
+  tickerCount = 3;
+  clientCount = 3;
 
-  clientCounts = Array(this.clientCount())
+  clientCounts = Array(this.clientCount)
     .fill(0)
     .map((x, i) => i + 1);
 
-  tickerCounts = Array(this.tickerCount())
+  tickerCounts = Array(this.tickerCount)
     .fill(0)
     .map((x, i) => i + 1);
 
