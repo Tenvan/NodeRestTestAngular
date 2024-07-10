@@ -15,6 +15,7 @@
     "humao.rest-client",
     "redhat.vscode-yaml",
     "formulahendry.auto-rename-tag",
-    "formulahendry.auto-close-tag"
+    "formulahendry.auto-close-tag",
+    "steoates.autoimport"
   ]
 }
