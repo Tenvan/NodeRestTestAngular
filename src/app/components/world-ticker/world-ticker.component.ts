@@ -33,8 +33,8 @@ export class WorldTickerComponent implements OnInit {
   constructor(private sseService: ServerSentEventService) {}
   ngOnInit(): void {
     this.start = this.tickerId() * 1000;
-    this.count = 1000;
-    this.ticks = 1;
+    this.count = 20;
+    this.ticks = 200;
 
     this.sseService
       .getWorldTicker(
